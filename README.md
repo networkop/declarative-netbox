@@ -63,6 +63,13 @@ Build the `nbcli` binary
 make build-cli
 ```
 
+Authenticate against a Netbox instance (these details will be stored in ~/.netbox/config)
+
+```
+./bin/nbctl login  http://localhost:32178 0123456789abcdef0123456789abcdef01234567
+```
+
+
 Get the current list of devices
 
 ```

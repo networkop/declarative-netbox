@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/networkop/declarative-netbox/cmd/app"
 	"github.com/networkop/declarative-netbox/netbox"
 	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
@@ -31,12 +30,12 @@ func Execute(version, gitCommit string) error {
 
 	logr := zap.New(zap.UseFlagOptions(logOpts))
 
-	cliOpts := []app.CliOption{
-		app.WithLogger(logr),
+	cliOpts := []CliOption{
+		WithLogger(logr),
 	}
 
-	var cli *app.Cli
-	cli, err := app.NewCli(cliOpts...)
+	var cli *Cli
+	cli, err := NewCli(cliOpts...)
 	if err != nil {
 		logrus.Error("Error initializing CLI: %s", err)
 		os.Exit(1)
@@ -67,7 +66,7 @@ func Execute(version, gitCommit string) error {
 	return root.Execute()
 }
 
-func NewAuthCommand(c *app.Cli) *cobra.Command {
+func NewAuthCommand(c *Cli) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "login <server> <token>",
@@ -75,7 +74,7 @@ func NewAuthCommand(c *app.Cli) *cobra.Command {
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 
-			auth := app.NewAuthData()
+			auth := NewAuthData()
 			if err := auth.SaveAuth(args[0], args[1]); err != nil {
 				return err
 			}
@@ -91,7 +90,7 @@ func NewAuthCommand(c *app.Cli) *cobra.Command {
 	return cmd
 }
 
-func NewGetCommand(cli *app.Cli) *cobra.Command {
+func NewGetCommand(cli *Cli) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "get",
 		Aliases: []string{"read"},
@@ -101,7 +100,7 @@ func NewGetCommand(cli *app.Cli) *cobra.Command {
 		},
 	}
 
-	for _, r := range app.GetResources(cli) {
+	for _, r := range GetResources(cli) {
 		if r.Get() != nil {
 			cmd.AddCommand(r.Get())
 
@@ -111,7 +110,7 @@ func NewGetCommand(cli *app.Cli) *cobra.Command {
 	return cmd
 }
 
-func NewApplyCommand(cli *app.Cli) *cobra.Command {
+func NewApplyCommand(cli *Cli) *cobra.Command {
 	var fileName string
 	cmd := &cobra.Command{
 		Use:   "apply -f FILENAME",
@@ -122,7 +121,7 @@ func NewApplyCommand(cli *app.Cli) *cobra.Command {
 				cmd.Help()
 				return nil
 			}
-			if err := app.Action(cli, app.ApplyAction, fileName); err != nil {
+			if err := Action(cli, ApplyAction, fileName); err != nil {
 				return err
 			}
 			return nil
@@ -133,7 +132,7 @@ func NewApplyCommand(cli *app.Cli) *cobra.Command {
 	return cmd
 }
 
-func NewDeleteCommand(cli *app.Cli) *cobra.Command {
+func NewDeleteCommand(cli *Cli) *cobra.Command {
 	var fileName string
 	cmd := &cobra.Command{
 		Use:   "delete -f FILENAME",
@@ -144,7 +143,7 @@ func NewDeleteCommand(cli *app.Cli) *cobra.Command {
 				cmd.Help()
 				return nil
 			}
-			if err := app.Action(cli, app.DeleteAction, fileName); err != nil {
+			if err := Action(cli, DeleteAction, fileName); err != nil {
 				return err
 			}
 			return nil

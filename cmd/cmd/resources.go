@@ -1,4 +1,4 @@
-package app
+package cmd
 
 func GetResources(c *Cli) map[string]*Resource {
 	resources := make(map[string]*Resource)
