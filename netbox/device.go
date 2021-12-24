@@ -70,13 +70,13 @@ func (d *Device) Get(ctx context.Context) ([]netboxv1.Device, error) {
 
 // Apply creates or updates a device in Netbox
 func (d *Device) Apply(ctx context.Context) error {
-	_, found, err := d.exists(ctx)
+	dev, found, err := d.exists(ctx)
 	if err != nil {
 		return err
 	}
 
 	if found {
-		return d.update(ctx)
+		return d.update(ctx, dev)
 	}
 
 	return d.create(ctx)
@@ -87,7 +87,7 @@ func (d *Device) Delete(ctx context.Context) error {
 	log := logr.FromContext(ctx)
 
 	// controller could've crashed before processing the delete event
-	_, found, err := d.exists(ctx)
+	nbDev, found, err := d.exists(ctx)
 	if err != nil {
 		return err
 	}
@@ -97,7 +97,7 @@ func (d *Device) Delete(ctx context.Context) error {
 	}
 
 	response, err := d.Client.Dcim.DcimDevicesDelete(&dcim.DcimDevicesDeleteParams{
-		ID:      *d.Data.Status.ID,
+		ID:      nbDev.ID,
 		Context: ctx,
 	}, nil)
 	if err != nil {
@@ -161,7 +161,7 @@ func (d *Device) setStatus(response *models.DeviceWithConfigContext) error {
 	return nil
 }
 
-func (d *Device) update(ctx context.Context) error {
+func (d *Device) update(ctx context.Context, nbDev *models.DeviceWithConfigContext) error {
 	log := logr.FromContext(ctx)
 
 	IDs, err := d.resolveIDs(ctx)
@@ -177,7 +177,7 @@ func (d *Device) update(ctx context.Context) error {
 			Site:       &IDs.Site,
 			Tags:       []*models.NestedTag{},
 		},
-		ID:      *d.Data.Status.ID,
+		ID:      nbDev.ID,
 		Context: ctx,
 	}
 

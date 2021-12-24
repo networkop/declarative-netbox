@@ -1,25 +1,17 @@
 apiVersion: netbox.networkop.co.uk/v1
 kind: Device
 metadata:
-  creationTimestamp: null
-  name: testdev
+  name: leaf-99
 spec:
-  device_type: 3700c
-  role: test
-  site: test
-status:
-  id: 1
-  state: Ready
+  device_type: SN3700
+  role: leaf
+  site: CITC
 ---
 apiVersion: netbox.networkop.co.uk/v1
 kind: Device
 metadata:
-  creationTimestamp: null
-  name: testdev-2
+  name: spine-01
 spec:
-  device_type: vx
-  role: test
-  site: test
-status:
-  id: 15
-  state: Ready
+  device_type: SN3420
+  role: spine
+  site: CITC
