@@ -1,0 +1,13 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+  extraPortMappings:
+  - containerPort: 32178
+    hostPort: 32178
+    # optional: set the bind address on the host
+    # 0.0.0.0 is the current default
+    listenAddress: "0.0.0.0"
+    # optional: set the protocol to one of TCP, UDP, SCTP.
+    # TCP is the default
+    protocol: TCP

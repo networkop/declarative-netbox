@@ -1,0 +1,34 @@
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: manager-role
+rules:
+- apiGroups:
+  - netbox.networkop.co.uk
+  resources:
+  - devices
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - netbox.networkop.co.uk
+  resources:
+  - devices/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - netbox.networkop.co.uk
+  resources:
+  - devices/status
+  verbs:
+  - get
+  - patch
+  - update

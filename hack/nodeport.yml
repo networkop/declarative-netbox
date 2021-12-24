@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/instance: k8s
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: netbox
+    app.kubernetes.io/version: v3.0.11
+    helm.sh/chart: netbox-4.0.1
+  name: netbox-ext
+  namespace: default
+spec:
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - nodePort: 32178
+    port: 8080
+  selector:
+    app.kubernetes.io/component: netbox
+    app.kubernetes.io/instance: k8s
+    app.kubernetes.io/name: netbox
+  type: NodePort

@@ -1,0 +1,8 @@
+apiVersion: netbox.networkop.co.uk/v1
+kind: Device
+metadata:
+  name: device-sample
+spec:
+  site: test
+  role: test
+  device_type: 3700c

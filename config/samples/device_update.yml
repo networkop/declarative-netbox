@@ -1,0 +1,25 @@
+apiVersion: netbox.networkop.co.uk/v1
+kind: Device
+metadata:
+  creationTimestamp: null
+  name: testdev
+spec:
+  device_type: 3700c
+  role: test
+  site: test
+status:
+  id: 1
+  state: Ready
+---
+apiVersion: netbox.networkop.co.uk/v1
+kind: Device
+metadata:
+  creationTimestamp: null
+  name: testdev-2
+spec:
+  device_type: vx
+  role: test
+  site: test
+status:
+  id: 15
+  state: Ready
